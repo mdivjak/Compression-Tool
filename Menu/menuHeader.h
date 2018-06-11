@@ -71,17 +71,17 @@ struct FilePaths {
 //FUNCTION PROTOTYPES
 //main.c
 /**
-* @brief Funkcija pokrece graficki tj. Text User Interface (TUI).
-* Funkcija omogucava korisniku da izabere neku od opcija programa.
-* Nakon toga se pokrece meni za selekciju fajlova i potom se putanje
-* do tih fajlova prosledjuju funkcijama za kompresiju / dekompresiju.
+* @brief Function starts the graphical or Text User Interface.
+* Function enables the user to choose some of the program options.
+* After that file manager for selection files to compress will start
+* and afterwards the paths to those files will be passed to compression and decompression functions.
 */
 void startTUI();
 
 /**
-* @brief Funkcija koja se poziva prilikom interfejsa preko komandne linije.
-* @param[in] argc Broj argumenata prosledjenih preko komandne linije.
-* @param[in] argv Niz stringova argumenata koji su prosledjeni putem komandne linije.
+* @brief Function that is called when the command line interface is used.
+* @param[in] argc Number of arguments passed through the command line.
+* @param[in] argv Array of strings that were passed as arguments to the program.
 */
 void startCMD(int argc, char *argv[]);
 
@@ -126,142 +126,137 @@ void extract_tar(FILE *in, char *location);
 void infoMessage(WINDOW *info, char *messg);
 
 /**
-* @brief Funkcija ispisuje prozor u kome korisnik bira koji
-* algoritam ce se koristiti prilikom kompresovanja.
-* @return int Vraca indeks algoritma koji se koristi za kompresiju.
+* @brief Function write window in which the user chooses which
+* algorithms will be used for compression.
+* @return int Returns index of the algorithm that will be used for compression.
 */
 int selectAlgorithm();
 
 /**
-* @brief Funkcija ispisuje ponudjene algoritme u prozor algo
-* i markira selektovani izbor sa indeksom highlight
-* @param[in] algo Pokazivac na prozor u kome se ispisuje lista algoritama za selekciju.
-* @param[in] highlight Indeks opcije koja je trenutno selektovana.
+* @brief Function writes algorithms that can be chosen into the window algo.
+* and marks the choice selected with index highlight.
+* @param[in] algo Pointer to window in which the list with algorithms will be written.
+* @param[in] highlight Index of the option currently selected.
 */
 void promptAlgorithms(WINDOW *algo, int highlight);
 
 /**
-* @brief Funkcija ispisuje zaglavlje programa u kome se nalazi
-* naslov i opcije koje korisnik moze da izabere.
-* @param[in] header Prozor u okviru kog se vrsi ispis.
-* @param[in] highlight Indeks opcije koja je oznacena tamnijom bojom.
-* @param[in] title String koji se ispisuje kao naslov programa.
+* @brief Function writes the header of the program. The header contains the program title
+* and options that the user can choose.
+* @param[in] header Pointer to window in which the header will be written.
+* @param[in] highlight Index of option which is selected.
+* @param[in] title String that will be written as program title.
 */
 void writeHeaderMenu(WINDOW *header, int highlight, char *title);
 
 /**
-* @brief Funkcija ispisuje footer programa u kome se ispisuje
-* poruka koja je prosledjena funkciji.
-* @param[in] footer Prozor u okviru kog se vrsi ispis.
-* @param[in] message Poruka korisniku koja se ispisuje u footeru.
+* @brief Function write the footer of the program.
+* The footer will also contain the message passed as argument message.
+* @param[in] footer Window in which the footer message will be written.
+* @param[in] message Message that will be written in the footer.
 */
 void writeFooterMenu(WINDOW *footer, char *message);
 
 /**
-* @brief Funkcija sluzi za inicijalizaciju seme boja koje koristi program.
+* @brief Function that is used to initialize the color scheme used by the rest of the program.
 */
 void initColorScheme();
 
 /**
-* @brief Funkcija ispisuje poruku u prozoru za odabir YES / NO odgovora.
-* Poruka ne bi trebala da bude duza od 30 karaktera.
-* @param[in] prompt Prozor u okviru kog se vrsi ispis.
-* @param[in] highlight Indeks odgovora koji je markiran (YES ili NO).
-* @param[in] mesg String koji sadrzi poruku koja se ispisuje.
+* @brief Function writes the message in the window where the user can respond with YES / NO answer.
+* The message should not be longer than 30 characters.
+* @param[in] prompt Pointer to window in which the message will be written.
+* @param[in] highlight Index of marked answer (YES or NO).
+* @param[in] mesg String that contains the message to be written.
 */
 void promptText(WINDOW *prompt, int highlight, char *mesg);
 
 /**
-* @brief Funkcija brise prozor, a prethodno ga boji prosledjenom semom boja.
-* @param[in] win Prozor koji se brise.
-* @param[in] scheme Sema kojom se boji prozor pre nego sto se obrise.
+* @brief Function deletes the window, before that it colors it with color passed as argument.
+* @param[in] win Pointer to window to be deleted.
+* @param[in] scheme Color scheme that the window will be colored with before it will be deleted.
 */
 void destroyWin(WINDOW *win, chtype scheme);
 
 /**
-* @brief Funkcija otvara poruku u manjem YES / NO prozoru i vraca odgovor korisnika.
-* @param[in] mesg Poruka koja se ispisuje u prozoru.
-* @return int Ukoliko korisnik potvrdi YES vraca 1, u suprotnom 0.
+* @brief Function opens the message in smaller YES / NO window and returns users answer.
+* @param[in] mesg The message written in the window.
+* @return int If the user confirms YES it returns 1, otherwise 0.
 */
 int prompt(char *mesg);
 
 /**
-* @brief Funkcija ucitava ime arhive u kojoj ce se sacuvati kompresovani fajlovi.
-* @param[in] fp Pokazivac na strukturu FilePaths u kojoj se cuva ime arhive u polju fp->archive.
-* @param[in] footer Pokazivac na prozor u okviru kog se trazi od korisnika da unese ime fajla.
+* @brief Function reads the name of the archive in which the files will be saved and compressed.
+* @param[in] fp Pointer to the structure FilePaths in which the archive name will be saved.
+* @param[in] footer Pointer to window in which the user will enter the archive name.
 */
 void archiveName(struct FilePaths *fp, WINDOW *footer);
 
 //compressionCalls.c
 /**
-* @brief Funkcija poziva odgovarajuce funkcije za kompresiju.
-* @param[in] fp Struktura FilePaths u kojoj se nalaze putanje do fajlova.
-* @param[in] log Flag koji oznacava da li treba praviti log fajl.
-* @param[in] algorithm Flag koji oznacava koji algoritam treba koristiti.
+* @brief Function calls coresponding functions for compression.
+* @param[in] fp Structure FilePaths which contains paths to selected files.
+* @param[in] log Flag that marks if the log file should be maintained.
+* @param[in] algorithm Flag that marks which algorithm for compression should be used.
 */
 void callCompression(struct FilePaths fp, int log, int algorithm);
 
 //decompressionCalls.c
 /**
-* @brief Funkcija poziva odgovarajucu funkciju za dekompresiju.
-* @param[in] fp Struktura FilePaths u kojoj se nalaze putanje do fajlova.
-* @param[in] log Flag koji oznacava da li treba praviti log fajl.
+* @brief Function calls coresponding functinos for decompression.
+* @param[in] fp Structure FilePaths which contains paths to archives.
+* @param[in] log Flag that marks if the log file should be maintained.
 */
 void callDecompression(struct FilePaths fp, int log);
 
 //fileManagment.c
 /**
-* @brief Funkcija proverava da li je moguce citanje fajla sa putanjom path.
-* @param[in] path Putanja do fajla za koji se proverava da li je moguce citanje.
-* @return int Ukoliko je moguce da se fajl procita vraca 1, u suprotnom 0.
+* @brief Function that checks if the file in filepath can be read.
+* @param[in] path Path to file that should be checked for reading.
+* @return int It returns 1 if the file can be read, 0 otherwise.
 */
 int isReadable(char *path);
 
 /**
-* @brief Funkcija dodaje u strukturu Listing ime fajla koji je prosledjen.
-* @param[out] list Pokazivac na strukturu Listing u koju ce se dodati ime fajla.
-* @param[in] file Pokazivac na strukturu dirent fajla koji se dodaje u listing fajlova.
+* @brief Function adds to the structure Listing the name of the file that is passed.
+* @param[out] list Pointer to structure Listing in which the filepath will be added to.
+* @param[in] file Pointer to structure dirent of the file that should be added to Listing.
 */
 void addListing(struct Listing *list, struct dirent *file);
 
 /**
-* @brief Funkcija dodaje putanju do fajla u strukturu FilePaths.
-* @param[out] fp Pokazivac na strukturu FilePaths u koju se dodaje putanja do fajla.
-* @param[in] path String u kome se nalazi putanja do fajla koji se dodaje u strukturu.
+* @brief Function adds path to file to structure FilePaths.
+* @param[out] fp Pointer to structure FilePaths in which the path will be added.
+* @param[in] path String that contains filepath that should be added.
 */
 void addFilePath(struct FilePaths *fp, char *path);
 
 /**
-* @brief Funkcija proverava da li se putanja ne nalazi u strukturi FilePaths.
-* @param[in] fp Struktura FilePaths u kojoj se pretrazuju putanje do fajlova.
-* @param[in] name String u kome se nalazi putanja koja se trazi u strukturi fp.
-* @return int Ukoliko putanja nije pronadjena u strukturi vraca 1, u suprotnom 0.
+* @brief Function checks if the path is not inside the structure FilePaths.
+* @param[in] fp Structure FilePaths which will be searched.
+* @param[in] name String that will be searched for in structure FilePaths.
+* @return int If paths has not been find the function return 1, otherwise 0.
 */
 int notIn(struct FilePaths fp, char *name);
 
 /**
-* @brief Funkcija dodaje cekirane fajlove iz strukture Listing u listu
-* putanja fajlova u strukturi FilePaths.
-* @param[in] list Struktura Listing iz koje se dodaju markirani fajlovi.
-* @param[out] fp Pokazivac na strukturu FilePaths u koju se dodaju
-* putanje do markiranih fajlova.
+* @brief Function adds checked files from structure Listing to list of filepaths in structure FilePaths.
+* @param[in] list Structure Listing from which the marked files will be added.
+* @param[out] fp Pointer to structure FilePaths in which the marked files will be added.
 */
 void addChecked(struct Listing list, struct FilePaths *fp);
 
 /**
-* @brief Funkcija brise fajlove koji nisu cekirani u strukturi Listing,
-* ali se nalaze u listi putanja u strukturi FilePaths.
-* @param[in] list Struktura Listing iz koje se listaju putanje fajlova koje se brisu.
-* @param[out] fp Pokazivac na strukturu FilePaths iz koje se brisu putanje
-* koje se nalaze u listingu i nisu cekirane.
+* @brief Function deletes files that are not checked in structure Listing, but are present in the structure FilePaths.
+* @param[in] list Structure Listing from which the filepaths to delete will be read.
+* @param[out] fp Pointer to structure FilePaths from which the filepaths that are not checked in Listing will be deleted.
 */
 void deleteUnchecked(struct Listing list, struct FilePaths *fp);
 
 /**
-* @brief Funkcija cekira fajlove u strukturi Listing, ako se oni nalaze u listi
-* putanja u strukturi FilePaths.
-* @param[out] list Pokazivac na strukturu Listing u kojoj se cekiraju fajlovi.
-* @param[in] fp Struktura FilePaths koja sadrzi putanje cekiranih fajlova.
+* @brief Function marks files in structure Listing if they are in list of filepaths in structure FilePaths.
+* @param[out] list Pointer to structure Listing in which the files will be checked.
+* @param[in] fp Structure FilePaths which contains paths to checked files.
 */
 void markChecked(struct Listing *list, struct FilePaths fp);
 
