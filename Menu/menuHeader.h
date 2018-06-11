@@ -86,13 +86,43 @@ void startTUI();
 void startCMD(int argc, char *argv[]);
 
 //tarball.c
+/**
+* @brief Function returns size of file in bytes.
+* @param[in] fp Pointer to file whose size is to be returned.
+* return int Size of file in bytes.
+*/
 int filesize(FILE *fp);
+
+/**
+* @brief Functions takes an array of string that contain paths to files
+* and merges all of them into one tarball.
+* @param[in] filename Array of strings that contain paths to files.
+* @param[in] n Number of strings in the array.
+* @param[in] tarball Pointer to file to write all files.
+*/
 void make_tarball(char **filename, int n, FILE *tarball);
-char *name_of_file(char *filepath);
+
+/**
+* @brief Function returns pointer to the first letter of filename inside string filepath.
+* @param[in] filepath String that contains full path to file.
+* @return char* Pointer to first letter of the name of the file.
+*/
+char* name_of_file(char *filepath);
+
+/**
+* @brief Function unmerges files merged with make_tarball(char**, int, FILE*);
+* @param[in] in Pointer to file of all merged files.
+* @param[in] location String that contains path to folder in which the files will be extracted to.
+*/
 void extract_tar(FILE *in, char *location);
 
 
 //menuFunctions.c
+/**
+* @brief Function write message to a info window.
+* @param[in] info Pointer to window in which the message will be written.
+* @param[in] messg Message to be written in the window.
+*/
 void infoMessage(WINDOW *info, char *messg);
 
 /**
@@ -162,7 +192,7 @@ int prompt(char *mesg);
 */
 void archiveName(struct FilePaths *fp, WINDOW *footer);
 
-//fileManagment.c
+//compressionCalls.c
 /**
 * @brief Funkcija poziva odgovarajuce funkcije za kompresiju.
 * @param[in] fp Struktura FilePaths u kojoj se nalaze putanje do fajlova.
@@ -171,6 +201,7 @@ void archiveName(struct FilePaths *fp, WINDOW *footer);
 */
 void callCompression(struct FilePaths fp, int log, int algorithm);
 
+//decompressionCalls.c
 /**
 * @brief Funkcija poziva odgovarajucu funkciju za dekompresiju.
 * @param[in] fp Struktura FilePaths u kojoj se nalaze putanje do fajlova.
@@ -178,6 +209,7 @@ void callCompression(struct FilePaths fp, int log, int algorithm);
 */
 void callDecompression(struct FilePaths fp, int log);
 
+//fileManagment.c
 /**
 * @brief Funkcija proverava da li je moguce citanje fajla sa putanjom path.
 * @param[in] path Putanja do fajla za koji se proverava da li je moguce citanje.
