@@ -254,6 +254,12 @@ void addChecked(struct Listing list, struct FilePaths *fp);
 void deleteUnchecked(struct Listing list, struct FilePaths *fp);
 
 /**
+* @brief Function deletes all memory allocated for structure FilePaths.
+* @param[in] fp Pointer to structure FilePaths whose contents should be deleted.
+*/
+void deleteFilePaths(struct FilePaths *fp);
+
+/**
 * @brief Function marks files in structure Listing if they are in list of filepaths in structure FilePaths.
 * @param[out] list Pointer to structure Listing in which the files will be checked.
 * @param[in] fp Structure FilePaths which contains paths to checked files.
