@@ -261,126 +261,106 @@ void deleteUnchecked(struct Listing list, struct FilePaths *fp);
 void markChecked(struct Listing *list, struct FilePaths fp);
 
 /**
-* @brief Funkcija ispisuje imena fajlova i direktorijuma iz listinga na prozor body.
-* Crvenom bojom oznacava fajl / direktorijum na kome se trenutno nalazi 'kursor'.
-* @param[in] body Prozor u okviru kog se realizuje ispis.
-* @param[in] list Struktura iz koje se citaju i ispisuju imena fajlova i direktorijuma.
-* @param[in] highlight Indeks stavke koja je oznacena 'kursorom' tj. crvenom bojom.
-* @return int Indeks poslednjeg fajla iz strukture koji je ispisan na prozoru body.
+* @brief Function writes the name of files and directories from structure Listing to window body.
+* File that has the 'cursor' on it will be marked red.
+* @param[in] body Pointer to window in which the files will be listed.
+* @param[in] list Structure from which the names of files and directories will be read.
+* @param[in] highlight Index of the selected item.
+* @return int Index of the last file from structure Listing that was written in window body.
 */
 int writeListing(WINDOW *body, struct Listing list, int highlight);
 
 /**
-* @brief Funkcija dealocira svu memoriju koja je alocirana za cuvanje imena foldera
-* tj. fajlova u strukturi. Postavlja sve promenljive na 0 tj. NULL za pokazivace.
-* @param[out] list Pokazivac na strukturu iz koje se dealocira memorija.
+* @brief Function deallocates all memory that was allocated for storing the names of files.
+* @param[out] list Pointer to structure whose memory will be deallocated.
 */
 void deleteListing(struct Listing *list);
 
 /**
-* @brief Funkcija ispisuje sve fajlove koji se nalaze u strukturi FilePaths.
-* U toj strukturi se nalaze putanje do svih fajlova koje je korisnik markirao
-* do trenutka poziva funkcije.
-* @param[in] body Prozor u okviru kog treba ispisati listu putanja do fajlova.
-* @param[in] fp Struktura FilePaths u kojoj se nalazi lista svih putanja do
-* markiranih fajlova.
+* @brief Functoin writes all files that are in structure FilePaths.
+* That structure contains paths to all files that the user has selected up until the call of the function.
+* @param[in] body Pointer to window in which the paths to files should be written.
+* @param[in] fp Structure FilePaths which contains list of all paths to the selected files.
 */
 void printCheckedFiles(WINDOW *body, struct FilePaths fp);
 
 /**
-* @brief U okviru ove funkcije se realizuje meni u kome korisnik moze
-* da obelezi fajlove za kompresiju / dekompresiju kao i da se krece kroz
-* razlicite direktorijume.
-* @param[in] body Prozor u kome se realizuje ispis svih fajlova i kretanje
-* kroz meni, kao i odabir fajlova koji ce se kompresovati / dekompresovati.
-* @param[in] ind Ovaj argument funkcije moze biti 0 (ako se biraju fajlovi
-* za kompresiju) ili 1 (ako se biraju arhive za dekompresiju). Ovim argumentom
-* se bira da li ce se pozivati funkcije za listing fajlova ili
-* funkcije za listing arhiva.
-* @return struct FilePaths Struktura koja sadrzi stringove u kojima se nalaze
-* putanje do izabranih fajlova za kompresiju / dekompresiju.
+* @brief This function realizes a menu in which the user can mark files for compression / decompression
+* and move through diferent directories to view and selected other files.
+* @param[in] body Window in which the files will be listed.
+* @param[in] ind This argument can be 0 (to list all files) or 1 (to list only archives that can be decompressed).
+* @return struct FilePaths Structure that contains strings that contain full paths to selected files.
 */
 struct FilePaths fileSelection(WINDOW *body, int ind, WINDOW *footer);
 
 /**
-* @brief Funkcija u strukturu Listing ucitava imena svih fajlova
-* i foldera koji se nalaze u folderu path.
-* @param[out] list Pokazivac na strukturu Listing u koju se
-* upisuju sva imena fajlova i foldera u putanji path.
-* @param[in] path String koji je putanja do foldera iz kog
-* se ucitavaju fajlovi i folderi.
+* @brief Function reads the names of all files and folders in folder paths to structure Listing.
+* @param[out] list Pointer to structure Listing in which the names of files and folders will be stored.
+* @param[in] path String that contains path to folder that will be read.
 */
 void listFiles(struct Listing *list, char *path);
 
 /**
-* @brief Funkcija koja proverava da li fajl ima ekstenziju
-* arhive definisanu u menuHeader.h.
-* @param[in] arch Struktura dirent fajla koji se proverava.
-* @return int Ako fajl ima ekstenziju arhive vraca 1, u suprotnom 0.
+* @brief Function that checks if the file has archive extension defined in menuHeader.h
+* @param[in] arch Structure dirent of file to be checked.
+* @return int Returns 1 if the file has archive extension, otherwise 0.
 */
 int isArchive(char *arch);
 
 /**
-* @brief Funkcija u strukturu Listing ucitava imena svih arhiva
-* i foldera koji se nalaze u folderu path.
-* @param[out] list Pokazivac na strukturu Listing u koju se
-* upisuju sva imena arhiva i foldera u putanji path.
-* @param[in] path String koji je putanja do foldera iz kog
-* se ucitavaju arhive i folderi.
+* @brief Function reads the names of all archives and folders which are in folder path.
+* @param[out] list Pointer to structure Listing in which all archives and folders will be written to.
+* @param[in] path String which contains the path to folder from which the archives and folders will be read.
 */
 void listArchives(struct Listing *list, char *path);
 
 //commandLine.c
 /**
-* @brief Funkcija dodaje putanje fajlova prosledjenih u komandnoj liniji, u strukturu FilePaths.
-* @param[in] argc Broj argumenata komandne linije.
-* @param[in] argv Argumenti komandne linije.
-* @param[out] fp Pokazivac na strukturu FilePaths u koju se dodaju putanje do fajlova.
-* @param[in] i Indeks argumenta od kog pocinju putanje fajlova.
-* @param[in] archives Flag koji oznacava da li treba proveravati da li su selektovani fajlovi arhive.
+* @brief Function adds paths to files passed through command lines into structure FilePaths.
+* @param[in] argc Number of command line arguments.
+* @param[in] argv Command line arguments.
+* @param[out] fp Pointer to structure FilePaths in which paths to files will be added.
+* @param[in] i Index of first argument from which the names of files start.
+* @param[in] archives Flag that says should the files selected be checked for type (Are they archives?).
 */
 void addPathsCMD(int argc, char *argv[], struct FilePaths *fp, int i, int archives);
 
 /**
-* @brief Funkcija proverava da li string odgovara obrascu sa wildcardovima * i ?.
-* @param[in] str String koji se proverava.
-* @param[in] ptr Obrazac koji ukljucuje * i ? sa kojim se uporedjuje string.
-* @return int Ukoliko string odgovara obrascu vraca 1, u suprotnom 0.
+* @brief Funtion checks if the string matches the pattern with * and ? wildcards.
+* @param[in] str String that is being checked.
+* @param[in] ptr Pattern that contains * and ? against which the string will be compared.
+* @return int If string mathces the pattern function returns 1, otherwise 0.
 */
 int isMatch(char *str, char *ptr);
 
 /**
-* @brief Funkcija proverava da li je string p puna putanja do nekog fajla.
-* @param[in] p String koji se proverava.
-* @return int Ukoliko je p puna putanja do fajla vraca 1, u suprotnom 0.
+* @brief Function checks if string p is a full path to a file.
+* @param[in] p String that is being checked.
+* @return int Returns 1 if string p is full path to file, otherwise 0.
 */
 int fullPath(char *p);
 
 /**
-* @brief Funkcija proverava da li je argument koji je prosledio korisnik preko
-* komandne linije putanja do fajla, ili sadrzi specijalne znake * i ?
-* @param[in] p String koji se proverava.
-* @return int Vraca 1 ako putanja ne sadrzi znake za selekciju, 0 u suprotnom.
+* @brief Function checks if the argument passed through command line contains wildcards.
+* @param[in] p String that is being checked.
+* @return int Returns 1 if string doesn't contain wildcards, otherwise 0.
 */
 int isPath(char *p);
 
 /**
-* @brief Funkcija ispisuje objasnjenje za koriscenje programa
-* preko komandne linije.
-* @param[in] path String u kome se nalazi putanja do .exe fajla.
-* Ovaj argument sluzi da funkcija ispise tacno ime programa.
+* @brief Function writes help instruction how to use the program from the command line.
+* @param[in] path String that contains the path to program.
+* This argument is used to write the programs name.
 */
 void writeHelp(char *path);
 
 /**
-* @brief Funkcija ispisuje About sekciju prilikom koriscenja
-* programa preko komandne linije.
+* @brief Function writes About section of the program when the command line interface is used.
 */
 void writeAbout();
 
 /**
-* @brief Funkcija koja prijavljuje gresku u argumentima prilikom
-* koriscenjem programa preko komandne linije.
+* @brief Function writes an error message when the program is used from the command line.
 */
 void writeError();
 
